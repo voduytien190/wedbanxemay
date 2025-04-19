@@ -11,106 +11,169 @@
     <script src="../js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="../fonts/fontawesome-free-6.7.2-web/fontawesome-free-6.7.2-web/css/all.min.css">
     <script>
-        //Kiểm tra họ tên
-        function kiemTraHoTen(){
-            var hoten = /^[A-ZÀ-ỸA-Z][a-zà-ỹa-z]*(\s[A-ZÀ-ỸA-Z][a-zà-ỹa-z]*)+$/
-            var chuoiktt = $("#txtten").val();
-            var kq = hoten.test(chuoiktt);
-            if(kq == true){
-                
-            }else{
-                alert("Nhập sai tên, viết hoa đầu, ko để trống");
-            }
-        }
-        // kiểm tra email tvoduy102@gmail.com
-        function ktemail() {
-            var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            var emailValue = $("#txtemail").val().trim();
-
-            if (emailRegex.test(emailValue)) {
-                alert("Nhập đúng email");
-                return true;
-            } else {
-                alert("Nhập sai email");
-                return false;
-            }
-        }
-        // kiểm tra số điên thoại
-        function ktso() {
-            var so = /^0\d{9}$/;
-            var chuoikts = $("#txttel").val().trim();
-            var kq = so.test(chuoikts);
-            if (kq) {
-                alert("Nhập đúng số điện thoại");
-            } else {
-                alert("Nhập sai số điện thoại");
-            }
-        }
-        // kiểm tra mật khẩu
-        function ktmatkhau() {
-            var password1 = $('#txtpass1').val();
-            var password2 = $('#txtpass2').val();
-            return password1 === password2;
-        }
-
-        $(document).ready(function() {
-            $('#sumit').click(function() {
-                if (ktmatkhau()) {
-                    alert("Mật khẩu khớp");
+        $(document).ready(function () {
+            function kiemTraHoTen() {
+                var hoten = /^[A-ZÀ-Ỹ][a-zà-ỹ]*(\s[A-ZÀ-Ỹ][a-zà-ỹ]*)+$/;
+                var ten = $("#txtten").val().trim();
+                if (hoten.test(ten)) {
+                    return true;
                 } else {
-                    alert("Mật khẩu không khớp");
+                    alert("Tên phải viết hoa chữ cái đầu, không được để trống.");
+                    return false;
+                }
+            }
+
+            function ktso() {
+                var so = /^0\d{9}$/;
+                var sdt = $("#txtsdt").val().trim();
+                if (so.test(sdt)) {
+                    return true;
+                } else {
+                    alert("Số điện thoại không hợp lệ. Phải bắt đầu bằng 0 và đủ 10 chữ số.");
+                    return false;
+                }
+            }
+
+            function ktemail() {
+                var email = $("#txtemail").val().trim();
+                var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                if (re.test(email)) {
+                    return true;
+                } else {
+                    alert("Email không hợp lệ.");
+                    return false;
+                }
+            }
+
+            function ktmatkhau2() {
+                var password = $("#txtpass1").val();
+                var regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+                if (regex.test(password)) {
+                    return true;
+                } else {
+                    alert("Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
+                    return false;
+                }
+            }
+
+            function ktmatkhau() {
+                var pass1 = $("#txtpass1").val();
+                var pass2 = $("#txtpass2").val();
+                if (pass1 === pass2) {
+                    return true;
+                } else {
+                    alert("Mật khẩu xác nhận không khớp.");
+                    return false;
+                }
+            }
+
+            function ktngaysinh() {
+                var ns = $("#txtngaysinh").val();
+                var ngaysinh = new Date(ns);
+                var today = new Date();
+
+                if (isNaN(ngaysinh.getTime())) {
+                    alert("Ngày sinh không hợp lệ.");
+                    return false;
+                }
+
+                var age = today.getFullYear() - ngaysinh.getFullYear();
+                var m = today.getMonth() - ngaysinh.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < ngaysinh.getDate())) {
+                    age--;
+                }
+
+                if (age >= 18) {
+                    return true;
+                } else {
+                    alert("Bạn chưa đủ 18 tuổi.");
+                    return false;
+                }
+            }
+
+            $('#submit').click(function (e) {
+                e.preventDefault(); // Ngăn form submit mặc định
+
+                if (
+                    kiemTraHoTen() &&
+                    ktso() &&
+                    ktemail() &&
+                    ktmatkhau2() &&
+                    ktmatkhau() &&
+                    ktngaysinh()
+                ) {
+                    alert("Đăng ký thành công!");
+
+                    var row = `
+                        <tr>
+                            <td>${$("#txtten").val()}</td>
+                            <td>${$("#txtsdt").val()}</td>
+                            <td>${$("#gioitinh").val()}</td>
+                            <td>${$("#txtemail").val()}</td>
+                            <td>${$("#thanhpho").val()}</td>
+                            <td>${$("#quan").val()}</td>
+                            <td>${$("#txtdiachi").val()}</td>
+                            <td>${$("#txtngaysinh").val()}</td>
+                        </tr>
+                    `;
+                    $("#tblThongTin tbody").append(row);
+                    $('#formDangKy')[0].reset(); // Reset form
+                } else {
+                    alert("Vui lòng kiểm tra lại các thông tin đã nhập.");
                 }
             });
         });
-        function ktmatkhau2() {
-            var password = $("#txtpass").val(); // Lấy mật khẩu từ input
-            var regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-            if (regex.test(password)) {
-                alert("Mật khẩu hợp lệ!");
+        $(document).ready(function () {
+        // Hàm kiểm tra email
+        function ktEmailLogin() {
+            var email = $("#txtemail").val().replace(/\s/g, ''); // Xóa mọi khoảng trắng
+            console.log("Email nhập:", email); // Log email ra console để kiểm tra
+            var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (re.test(email)) {
+                $("#txtemail").removeClass("is-invalid");
                 return true;
             } else {
-                alert("Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
+                $("#txtemail").addClass("is-invalid");
+                // alert("Email không hợp lệ."); // Tùy bạn bật lại dòng này
                 return false;
             }
         }
-        // kiểm tra ngày sinh phải từ 18 tuổi trở lên
-        function ktngaysinh() {
-            var ns = $("#txtngaysinh").val();
-            var nam = new Date(ns);
-            var namht = new Date();
 
-            // Kiểm tra xem ngày sinh có hợp lệ không
-            if (isNaN(nam.getTime())) {
-                alert("Ngày sinh không hợp lệ");
-                return false;
-            }
-
-            var tuoi = namht.getFullYear() - nam.getFullYear();
-            // Ngày sinh nhật chưa đến trong năm
-            if (namht.getMonth() < nam.getMonth() || 
-            (namht.getMonth() === nam.getMonth() && namht.getDate() < nam.getDate())) {
-            tuoi--;
-        }
-
-            if (tuoi >= 18) {
-                alert("Bạn đủ 18 tuổi");
-                return true; // Trả về true nếu đủ tuổi
+        // Hàm kiểm tra mật khẩu
+        function ktMatKhauLogin() {
+            var password = $("#txtpass").val();
+            // Regex kiểm tra: ít nhất 8 ký tự, gồm chữ hoa, thường, số, và ký tự đặc biệt
+            var re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+            if (re.test(password)) {
+                $("#txtpass").removeClass("is-invalid");
+                return true;
             } else {
-                alert("Bạn chưa đủ 18 tuổi");
-            return false; // Trả về false nếu chưa đủ tuổi
-            }  
+            $("#txtpass").addClass("is-invalid");
+                return false;
+            }
         }
-        
-        $(document).ready(function() {
-            $('#sumit').click(function() {
-                if (ktmatkhau()) {
-                    alert("Mật khẩu khớp");
-                } else {
-                    alert("Mật khẩu không khớp");
-                }
-            });   
+
+        // Xử lý submit form đăng nhập
+        $('#authModal').on('submit', '#formLogin', function (e) {
+            e.preventDefault();
+
+            if (ktEmailLogin() && ktMatKhauLogin()) {
+                alert("Đăng nhập thành công!");
+                var modalEl = document.getElementById('authModal');
+                var modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+            } else {
+                console.warn("Thông tin đăng nhập chưa hợp lệ.");
+            }
         });
+
+        // Xóa lỗi khi nhập lại
+        $("#txtemail, #txtpass").on("input", function () {
+            $(this).removeClass("is-invalid");
+        });
+    });
     </script>
 </head>
 <body>
@@ -198,76 +261,73 @@
             </div>
         </div>
     </div>
-    <div class="container d-flex justify-content-center" style="margin-bottom: 40px;">
+    <div class="container d-flex justify-content-center" style="margin-bottom: 40px; margin-top: 40px;">
         <div class="row">
-            <form id="formDangKy" action="">
-                <div class="col-md-12">
-                    <h3 class="mt-5">NHẬP THÔNG TIN ĐĂNG KÝ</h3>
-                    <input type="text" class="form-control mb-2" placeholder="Họ tên" id="txtten">
-        
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="tel" class="form-control mb-2" placeholder="Số điện thoại" id="txtsdt">
-                        </div>
-                        <div class="col-md-6">
-                            <select class="form-select mb-2" id="gioitinh">
-                                <option selected disabled>Chọn giới tính</option>
-                                <option value="Nam">Nam</option>
-                                <option value="Nữ">Nữ</option>
-                            </select>
-                        </div>
-                    </div>
-        
-                    <input type="email" id="txtemail" class="form-control mb-2" placeholder="Email">
-        
-                    <div class="row">
-                        <div class="col-md-6">
-                            <input type="password" class="form-control mb-2" placeholder="Mật khẩu" id="txtpass1">
-                        </div>
-                        <div class="col-md-6">
-                            <input type="password" class="form-control mb-2" placeholder="Xác nhận mật khẩu" id="txtpass2">
-                        </div>
-                    </div>
-        
-                    <div class="row">
-                        <div class="col-md-6">
-                            <select class="form-select mb-2" id="thanhpho">
-                                <option selected disabled>Chọn thành phố</option>
-                                <option>HCM</option>
-                                <option>Đà Nẵng</option>
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <select class="form-select mb-2" id="quan">
-                                <option selected disabled>Quận</option>
-                                <option>Gò Vấp</option>
-                                <option>Quận 1</option>
-                            </select>
-                        </div>
-                    </div>
-                    <input type="text" class="form-control mb-2" placeholder="Địa chỉ" id="txtdiachi">
-                    <input type="date" class="form-control mb-2" id="txtngaysinh">
-                    <button type="submit" class="btn btn-warning">Đăng Ký</button>
-        
-                    <table class="table mt-5" id="tblThongTin">
-                        <thead>
-                            <tr>
-                                <th>Họ tên</th>
-                                <th>SĐT</th>
-                                <th>Giới tính</th>
-                                <th>Email</th>
-                                <th>Thành phố</th>
-                                <th>Quận</th>
-                                <th>Địa chỉ</th>
-                                <th>Ngày sinh</th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
+            <form id="formDangKy">
+                <div class="mb-3">
+                    <label for="txtten" class="form-label">Họ tên:</label>
+                    <input type="text" class="form-control" id="txtten">
                 </div>
+                <div class="mb-3">
+                    <label for="txtsdt" class="form-label">Số điện thoại:</label>
+                    <input type="text" class="form-control" id="txtsdt">
+                </div>
+                <div class="mb-3">
+                    <label for="gioitinh" class="form-label">Giới tính:</label>
+                    <select class="form-select" id="gioitinh">
+                        <option value="Nam">Nam</option>
+                        <option value="Nữ">Nữ</option>
+                        <option value="Khác">Khác</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="txtemail" class="form-label">Email:</label>
+                    <input type="text" class="form-control" id="txtemail">
+                </div>
+                <div class="mb-3">
+                    <label for="txtpass1" class="form-label">Mật khẩu:</label>
+                    <input type="password" class="form-control" id="txtpass1">
+                </div>
+                <div class="mb-3">
+                    <label for="txtpass2" class="form-label">Xác nhận mật khẩu:</label>
+                    <input type="password" class="form-control" id="txtpass2">
+                </div>
+                <div class="mb-3">
+                    <label for="txtngaysinh" class="form-label">Ngày sinh:</label>
+                    <input type="date" class="form-control" id="txtngaysinh">
+                </div>
+                <div class="mb-3">
+                    <label for="thanhpho" class="form-label">Thành phố:</label>
+                    <input type="text" class="form-control" id="thanhpho">
+                </div>
+                <div class="mb-3">
+                    <label for="quan" class="form-label">Quận:</label>
+                    <input type="text" class="form-control" id="quan">
+                </div>
+                <div class="mb-3">
+                    <label for="txtdiachi" class="form-label">Địa chỉ:</label>
+                    <input type="text" class="form-control" id="txtdiachi">
+                </div>
+                <button type="submit" class="btn btn-primary" id="submit">Đăng ký</button>
             </form>
-        </div>
         
+            <h3 class="mt-5">Thông tin đã đăng ký</h3>
+            <table class="table table-bordered mt-3" id="tblThongTin">
+                <thead>
+                    <tr>
+                        <th>Họ tên</th>
+                        <th>SĐT</th>
+                        <th>Giới tính</th>
+                        <th>Email</th>
+                        <th>Thành phố</th>
+                        <th>Quận</th>
+                        <th>Địa chỉ</th>
+                        <th>Ngày sinh</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
     <footer>
         <div class="container-fluid bg-danger p-4 footer">
@@ -319,65 +379,29 @@
             </div>
         </div>
     </footer>
-    <!--Modal-->
-    <div class="modal fade" id="authModal">
-        <div class="modal-dialog">
-            <div class="modal-content p-3">
-                <!-- Tabs chuyển đổi -->
-                <ul class="nav nav-tabs mb-3" id="authTab" role="tablist">
-                    <li class="nav-item">
-                        <button class="nav-link active fw-bold" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">
-                            ĐĂNG NHẬP
-                        </button>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <!-- Tab Đăng Nhập -->
-                    <div class="tab-pane fade show active" id="login" role="tabpanel">
-                        <p>Vui lòng đăng nhập trước khi Mua hàng ở đây!</p>
-                        <input type="email" name="txtemail" id="txtemail" class="form-control mb-2" placeholder="Email" onblur="ktemail()"> 
-                        <input type="password" class="form-control mb-2" placeholder="Mật Khẩu" id="txtpass" onblur="ktmatkhau2()">
-                        <p class="mt-2"><a href="#" class="text-decoration-none">Quên mật khẩu?</a></p>
-                        <button type="submit" class="btn btn-warning w-100">Đăng nhập</button>
+    <!-- Modal Đăng Nhập -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content p-3">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="login" role="tabpanel">
+                            <p>Vui lòng đăng nhập trước khi mua hàng!</p>
+                        <form id="formLogin">
+                            <div class="mb-3">
+                                <input type="email" name="txtemail" id="txtemail" class="form-control" placeholder="Email">
+                                <div class="invalid-feedback">Email không hợp lệ.</div>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" id="txtpass" class="form-control" placeholder="Mật khẩu">
+                                <div class="invalid-feedback">Mật khẩu phải có ít nhất 8 ký tự.</div>
+                            </div>
+                            <p class="mt-2"><a href="#" class="text-decoration-none">Quên mật khẩu?</a></p>
+                            <button type="submit" class="btn btn-warning w-100" id="submit">Đăng nhập</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <script>
-        document.getElementById("formDangKy").addEventListener("submit", function(e) {
-            e.preventDefault();
-
-            const ten = document.getElementById("txtten").value.trim();
-            const sdt = document.getElementById("txtsdt").value.trim();
-            const gioiTinh = document.getElementById("gioitinh").value;
-            const email = document.getElementById("txtemail").value.trim();
-            const thanhPho = document.getElementById("thanhpho").value;
-            const quan = document.getElementById("quan").value;
-            const diaChi = document.getElementById("txtdiachi").value.trim();
-            const ngaySinh = document.getElementById("txtngaysinh").value;
-
-            if (!ten || !sdt || !gioiTinh || !email || !thanhPho || !quan || !diaChi || !ngaySinh) {
-                alert("Vui lòng nhập đầy đủ thông tin.");
-                return;
-            }
-
-            const table = document.getElementById("tblThongTin").getElementsByTagName("tbody")[0];
-            const newRow = table.insertRow();
-
-            newRow.innerHTML = `
-                <td>${ten}</td>
-                <td>${sdt}</td>
-                <td>${gioiTinh}</td>
-                <td>${email}</td>
-                <td>${thanhPho}</td>
-                <td>${quan}</td>
-                <td>${diaChi}</td>
-                <td>${ngaySinh}</td>
-            `;
-
-            this.reset();
-        });
-    </script>
 </body>
 </html>

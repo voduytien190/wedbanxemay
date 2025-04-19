@@ -11,106 +11,56 @@
     <script src="../js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="../fonts/fontawesome-free-6.7.2-web/fontawesome-free-6.7.2-web/css/all.min.css">
     <script>
-        //Kiểm tra họ tên
-        function kiemTraHoTen(){
-            var hoten = /^[A-ZÀ-ỸA-Z][a-zà-ỹa-z]*(\s[A-ZÀ-ỸA-Z][a-zà-ỹa-z]*)+$/
-            var chuoiktt = $("#txtten").val();
-            var kq = hoten.test(chuoiktt);
-            if(kq == true){
-                
-            }else{
-                alert("Nhập sai tên, viết hoa đầu, ko để trống");
-            }
-        }
-        // kiểm tra email tvoduy102@gmail.com
-        function ktemail() {
-            var email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            var chuoikte = $("#txtemail").val().trim();
-            var kq = email.test(chuoikte);
-            if (kq) {
-                alert("Nhập sai email");
-                return false;
-            } else {
-                alert("Nhập đúng email");
+        $(document).ready(function () {
+        // Hàm kiểm tra email
+        function ktEmailLogin() {
+            var email = $("#txtemail").val().replace(/\s/g, ''); // Xóa mọi khoảng trắng
+            console.log("Email nhập:", email); // Log email ra console để kiểm tra
+            var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            if (re.test(email)) {
+                $("#txtemail").removeClass("is-invalid");
                 return true;
-            }
-        }
-        // kiểm tra số điên thoại
-        function ktso() {
-            var so = /^0\d{9}$/;
-            var chuoikts = $("#txttel").val().trim();
-            var kq = so.test(chuoikts);
-            if (kq) {
-                alert("Nhập đúng số điện thoại");
             } else {
-                alert("Nhập sai số điện thoại");
+                $("#txtemail").addClass("is-invalid");
+                // alert("Email không hợp lệ."); // Tùy bạn bật lại dòng này
+                return false;
             }
-        }
-        // kiểm tra mật khẩu
-        function ktmatkhau() {
-            var password1 = $('#txtpass1').val();
-            var password2 = $('#txtpass2').val();
-            return password1 === password2;
         }
 
-        $(document).ready(function() {
-            $('#sumit').click(function() {
-                if (ktmatkhau()) {
-                    alert("Mật khẩu khớp");
-                } else {
-                    alert("Mật khẩu không khớp");
-                }
-            });
+        // Hàm kiểm tra mật khẩu
+        function ktMatKhauLogin() {
+            var password = $("#txtpass").val();
+            // Regex kiểm tra: ít nhất 8 ký tự, gồm chữ hoa, thường, số, và ký tự đặc biệt
+            var re = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+            if (re.test(password)) {
+                $("#txtpass").removeClass("is-invalid");
+                return true;
+            } else {
+            $("#txtpass").addClass("is-invalid");
+                return false;
+            }
+        }
+
+        // Xử lý submit form đăng nhập
+        $('#authModal').on('submit', '#formLogin', function (e) {
+            e.preventDefault();
+
+            if (ktEmailLogin() && ktMatKhauLogin()) {
+                alert("Đăng nhập thành công!");
+                var modalEl = document.getElementById('authModal');
+                var modal = bootstrap.Modal.getInstance(modalEl);
+                modal.hide();
+            } else {
+                console.warn("Thông tin đăng nhập chưa hợp lệ.");
+            }
         });
-        function ktmatkhau2() {
-            var password = $("#txtpass").val(); // Lấy mật khẩu từ input
-            var regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-            if (regex.test(password)) {
-                alert("Mật khẩu hợp lệ!");
-                return true;
-            } else {
-                alert("Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
-                return false;
-            }
-        }
-        // kiểm tra ngày sinh phải từ 18 tuổi trở lên
-        function ktngaysinh() {
-            var ns = $("#txtngaysinh").val();
-            var nam = new Date(ns);
-            var namht = new Date();
-
-            // Kiểm tra xem ngày sinh có hợp lệ không
-            if (isNaN(nam.getTime())) {
-                alert("Ngày sinh không hợp lệ");
-                return false;
-            }
-
-            var tuoi = namht.getFullYear() - nam.getFullYear();
-            // Ngày sinh nhật chưa đến trong năm
-            if (namht.getMonth() < nam.getMonth() || 
-            (namht.getMonth() === nam.getMonth() && namht.getDate() < nam.getDate())) {
-            tuoi--;
-        }
-
-            if (tuoi >= 18) {
-                alert("Bạn đủ 18 tuổi");
-                return true; // Trả về true nếu đủ tuổi
-            } else {
-                alert("Bạn chưa đủ 18 tuổi");
-            return false; // Trả về false nếu chưa đủ tuổi
-            }  
-        }
-        
-        $(document).ready(function() {
-            $('#sumit').click(function() {
-                if (ktmatkhau()) {
-                    alert("Mật khẩu khớp");
-                } else {
-                    alert("Mật khẩu không khớp");
-                }
-            });   
-        });        
+        // Xóa lỗi khi nhập lại
+        $("#txtemail, #txtpass").on("input", function () {
+            $(this).removeClass("is-invalid");
+        });
+    });     
     </script>
 </head>
 <body>
@@ -288,30 +238,29 @@
             </div>
         </div>
     </footer>
-    <!--Modal-->
-    <div class="modal fade" id="authModal">
+    <!-- Modal Đăng Nhập -->
+    <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content p-3">
-                <!-- Tabs chuyển đổi -->
-                <ul class="nav nav-tabs mb-3" id="authTab" role="tablist">
-                    <li class="nav-item">
-                        <button class="nav-link active fw-bold" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">
-                            ĐĂNG NHẬP
-                        </button>
-                    </li>
-                </ul>
                 <div class="tab-content">
-                    <!-- Tab Đăng Nhập -->
                     <div class="tab-pane fade show active" id="login" role="tabpanel">
-                        <p>Vui lòng đăng nhập trước khi Mua hàng ở đây!</p>
-                        <input type="email" name="txtemail" id="txtemail" class="form-control mb-2" placeholder="Email" onblur="ktemail()"> 
-                        <input type="password" class="form-control mb-2" placeholder="Mật Khẩu" id="txtpass" onblur="ktmatkhau2()">
+                        <p>Vui lòng đăng nhập trước khi mua hàng!</p>
+                    <form id="formLogin">
+                        <div class="mb-3">
+                            <input type="email" name="txtemail" id="txtemail" class="form-control" placeholder="Email">
+                            <div class="invalid-feedback">Email không hợp lệ.</div>
+                        </div>
+                        <div class="mb-3">
+                            <input type="password" id="txtpass" class="form-control" placeholder="Mật khẩu">
+                            <div class="invalid-feedback">Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, thường, số, và ký tự đặc biệt</div>
+                        </div>
                         <p class="mt-2"><a href="#" class="text-decoration-none">Quên mật khẩu?</a></p>
-                        <button type="submit" class="btn btn-warning w-100">Đăng nhập</button>
-                    </div>
+                        <button type="submit" class="btn btn-warning w-100" id="submit">Đăng nhập</button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </body>
 </html>
