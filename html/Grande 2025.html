@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cửa Hàng Xe Máy Nam Tiến</title>
+    <link rel="icon" type="image/png" href="../img/logo.png">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <script src="../js/jquery-3.7.1.min.js"></script>
+    <script src="../js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="../fonts/fontawesome-free-6.7.2-web/fontawesome-free-6.7.2-web/css/all.min.css">
+    <script>
+        //Kiểm tra họ tên
+        function kiemTraHoTen(){
+            var hoten = /^[A-ZÀ-ỸA-Z][a-zà-ỹa-z]*(\s[A-ZÀ-ỸA-Z][a-zà-ỹa-z]*)+$/
+            var chuoiktt = $("#txtten").val();
+            var kq = hoten.test(chuoiktt);
+            if(kq == true){
+                
+            }else{
+                alert("Nhập sai tên, viết hoa đầu, ko để trống");
+            }
+        }
+        // kiểm tra email tvoduy102@gmail.com
+        function ktemail() {
+            var email = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            var chuoikte = $("#txtemail").val().trim();
+            var kq = email.test(chuoikte);
+            if (kq) {
+                alert("Nhập sai email");
+                return false;
+            } else {
+                alert("Nhập đúng email");
+                return true;
+            }
+        }
+        // kiểm tra số điên thoại
+        function ktso() {
+            var so = /^0\d{9}$/;
+            var chuoikts = $("#txttel").val().trim();
+            var kq = so.test(chuoikts);
+            if (kq) {
+                alert("Nhập đúng số điện thoại");
+            } else {
+                alert("Nhập sai số điện thoại");
+            }
+        }
+        // kiểm tra mật khẩu
+        function ktmatkhau() {
+            var password1 = $('#txtpass1').val();
+            var password2 = $('#txtpass2').val();
+            return password1 === password2;
+        }
+
+        $(document).ready(function() {
+            $('#sumit').click(function() {
+                if (ktmatkhau()) {
+                    alert("Mật khẩu khớp");
+                } else {
+                    alert("Mật khẩu không khớp");
+                }
+            });
+        });
+        function ktmatkhau2() {
+            var password = $("#txtpass").val(); // Lấy mật khẩu từ input
+            var regex = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+            if (regex.test(password)) {
+                alert("Mật khẩu hợp lệ!");
+                return true;
+            } else {
+                alert("Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
+                return false;
+            }
+        }
+        // kiểm tra ngày sinh phải từ 18 tuổi trở lên
+        function ktngaysinh() {
+            var ns = $("#txtngaysinh").val();
+            var nam = new Date(ns);
+            var namht = new Date();
+
+            // Kiểm tra xem ngày sinh có hợp lệ không
+            if (isNaN(nam.getTime())) {
+                alert("Ngày sinh không hợp lệ");
+                return false;
+            }
+
+            var tuoi = namht.getFullYear() - nam.getFullYear();
+            // Ngày sinh nhật chưa đến trong năm
+            if (namht.getMonth() < nam.getMonth() || 
+            (namht.getMonth() === nam.getMonth() && namht.getDate() < nam.getDate())) {
+            tuoi--;
+        }
+
+            if (tuoi >= 18) {
+                alert("Bạn đủ 18 tuổi");
+                return true; // Trả về true nếu đủ tuổi
+            } else {
+                alert("Bạn chưa đủ 18 tuổi");
+            return false; // Trả về false nếu chưa đủ tuổi
+            }  
+        }
+        
+        $(document).ready(function() {
+            $('#sumit').click(function() {
+                if (ktmatkhau()) {
+                    alert("Mật khẩu khớp");
+                } else {
+                    alert("Mật khẩu không khớp");
+                }
+            });   
+        });        
+    </script>
+</head>
+<body>
+    <div class="container-fluid">
+        <header>
+            <div class="row bg-secondary py-1 px-xl-5">
+                <div class="d-inline-flex align-items-center h-100">
+                    <a href="#" class="text-body nav-link me-3">
+                        <i class="fa-brands fa-android"></i>
+                        Tải app trên android
+                    </a>
+                    <a href="#" class="text-body nav-link me-3">
+                        <i class="fa-brands fa-apple"></i>
+                        Tải app trên IOS
+                    </a>
+                    <button type="button" class="btn btn-warning me-3 ms-auto" data-bs-toggle="modal" data-bs-target="#authModal">
+                        <a href="#" class="text-body nav-link">
+                            Đăng nhập
+                        </a>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center text-lg-right"></div>
+            <div class="row align-items-center bg-light px-xl-5 d-none d-lg-flex">
+                <div class="col-lg-4">
+                    <a href="Home.html"><img src="../img/logo.png" alt=""></a>
+                </div>
+                <div class="col-lg-4">
+                    <form method="get">
+                        <div class="input-group w-75">
+                            <input type="text" class="form-control" placeholder="Tìm kiếm sản phẩm">
+                            <button type="submit" class="input-group-text bg-transparent text-primary">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-4 text-end">
+                    <div class="m-0">HOTLINE</div>
+                    <h5 class="m-0">
+                        <span style="border: 2px solid black; border-radius: 50%; padding: 5px; display: inline-block;">
+                            <i class="fa-solid fa-phone"></i>
+                        </span>
+                        19002145
+                    </h5>
+                </div>
+            </div>
+        </header>
+        
+        <div class="row mt-2 bg-danger p-2">
+            <div class="container-fluid">
+                <nav class="navbar navbar-expand-lg navbar-dark">
+                    <div class="container-fluid">
+                        <!-- Dropdown Menu -->
+                        <div class="dropdown">
+                            <button class="btn text-dark fw-bold dropdown-toggle p-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="background-color: #f4c400;">
+                                &#9776; DANH MỤC SẢN PHẨM
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="xetayga1.html">Xe Tay Ga</a></li>
+                                <li><a class="dropdown-item" href="xesovataycon1.html">Xe số & Tay Côn</a></li>
+                                <li><a class="dropdown-item" href="phutung.html">Phụ Tùng</a></li>
+                            </ul>
+                        </div>
+                
+                        <!-- Navbar links -->
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                            <ul class="navbar-nav">
+                                <li class="nav-item"><a class="nav-link" href="Home.html">Trang chủ</a></li>
+                                <li class="nav-item"><a class="nav-link" href="Gioithieu.html">Giới thiệu</a></li>
+                                <li class="nav-item"><a class="nav-link" href="tatcasp1.html">Tất cả sản phẩm</a></li>
+                                <li class="nav-item"><a class="nav-link" href="tragop.html">Đăng ký trả góp</a></li>
+                                <li class="nav-item"><a class="nav-link" href="lienhe.html">Liên hệ</a></li>
+                                <li class="nav-item"><a class="nav-link" href="DangKy.html">Đăng ký Thành Viên</a></li>
+                            </ul>
+                        </div>
+                
+                        <!-- Cart Icon -->
+                        <a href="#"><i class="fa-solid fa-cart-shopping"></i></a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+    </div>
+    
+    <div class="container-fluid mt-4 w-100 mb-4 custom-background" style="background-color: #fff;">
+        <div class="row mx-4">
+            <div class="col-12 col-sm-6 col-md-4">
+                <!-- Carousel -->
+                <div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+                    <!-- Indicators/dots -->
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="3"></button>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="4"></button>
+                        <button type="button" data-bs-target="#demo" data-bs-slide-to="5"></button>
+                    </div>
+                    <!-- The slideshow/carousel -->
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="../img/Grande/Carousel/h1.png" class="d-block w-100" alt="Banner 1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../img/Grande/Carousel/h2.png" class="d-block w-100" alt="Banner 2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../img/Grande/Carousel/h3.png" class="d-block w-100" alt="Banner 3">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../img/Grande/Carousel/h4.png" class="d-block w-100" alt="Banner 4">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../img/Grande/Carousel/h5.png" class="d-block w-100" alt="Banner 4">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="../img/Grande/Carousel/h6.png" class="d-block w-100" alt="Banner 4">
+                        </div>
+                    </div>
+                    <!-- Left and right controls/icons -->
+                    <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-8">
+                <h1>Grande 2025 Các Phiên Bản</h1>
+                <p>Giá Gốc: <span1 style="text-decoration: line-through;">47.200.000 VNĐ</span1></p>
+                <p >Giá: <Span>46,000,000</Span></p>
+                <h3>Thông tin</h3>
+                <p>Yamaha Grande 2025 không chỉ nổi bật với thiết kế sang trọng mà còn được trang bị động cơ hiện đại cùng các tiện ích hàng đầu, đáp ứng nhu cầu ngày càng cao của người tiêu dùng Việt Nam. Hãy cùng tìm hiểu chi tiết từng khía cạnh dưới đây.</p>
+                <div class="quantity-container">
+                    <label for="quantity" class="quantity-label">Số lượng:</label>
+                    <input
+                        type="number"
+                        id="quantity"
+                        class="quantity-input"
+                        min="1"
+                        value="1"
+                    />
+                    <button class="btn-buy" type="button" style="background-color: yellow;">
+                        <i class="fas fa-shopping-cart"></i>
+                        MUA NGAY
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid mt-5">
+            <div class="row">
+                <div class="col-12">
+                    <div class="p-4" style="max-height: 600px; overflow-y: auto;">
+                        <h4 class="mb-3 text-center">Thông số kỹ thuật</h4>
+                        <table class="table table-bordered table-striped text-center">
+                            <thead>
+                                <tr>
+                                    <th>THÔNG SỐ KỸ THUẬT</th>
+                                    <th>YAMAHA Grande 2025</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>Khối lượng (kg)</td><td>100 - 101</td></tr>
+                                <tr><td>Dài × Rộng × Cao (mm)</td><td>1.820 × 684 × 1.155</td></tr>
+                                <tr><td>Khoảng sáng gầm xe (mm)</td><td>127</td></tr>
+                                <tr><td>Ngăn chứa đồ (L)</td><td>25</td></tr>
+                                <tr><td>Loại khung</td><td>Underbone</td></tr>
+                                <tr><td>Hệ thống giảm xóc trước</td><td>Ống lồng</td></tr>
+                                <tr><td>Hệ thống giảm xóc sau</td><td>Giảm chấn lò xo dầu</td></tr>
+                                <tr><td>Kích cỡ lốp trước/sau</td>
+                                    <td>
+                                        <p>Lốp trước: 110/70 – 12 47J (không săm)</p>
+                                        <p>Lốp sau: 110/70 – 12 47L (không săm)</p>
+                                    </td>
+                                </tr>
+                                <tr><td>Phanh trước</td><td>Đĩa đơn thuỷ lực, ABS</td></tr>
+                                <tr><td>Phanh sau</td><td>Phanh tang trống</td></tr>
+                                <tr><td>Đèn trước</td><td>LED</td></tr>
+                                <tr><td>Loại động cơ</td><td>Blue Core Hybrid, 4 kỳ, xi-lanh đơn, 2 van, làm mát bằng không khí</td></tr>
+                                <tr><td>Công suất tối đa</td><td>6.05 kW / 6.500 rpm</td></tr>
+                                <tr><td>Mô-men xoắn cực đại</td><td>10.4 Nm / 5.000 rpm</td></tr>
+                                <tr><td>Dung tích nhớt máy (L)</td><td>0,84</td></tr>
+                                <tr><td>Dung tích bình xăng (L)</td><td>4,0</td></tr>
+                                <tr><td>Mức tiêu thụ nhiên liệu</td><td>1,66L/100km</td></tr>
+                                <tr><td>Hệ thống khởi động</td><td>Điện</td></tr>
+                                <tr><td>Hệ thống bôi trơn</td><td>Dầu bôi trơn</td></tr>
+                                <tr><td>Hệ thống đánh lửa</td><td>T.C.I (kỹ thuật số)</td></tr>
+                                <tr><td>Hệ thống ly hợp</td><td>Khô</td></tr>
+                                <tr><td>Tỉ số truyền động</td><td>2,216 - 0,748 : 1</td></tr>
+                                <tr><td>Dung tích xy-lanh</td><td>125cc</td></tr>
+                                <tr><td>Đường kính × Hành trình pít tông (mm)</td><td>52,4 × 57,9</td></tr>
+                                <tr><td>Tỷ số nén</td><td>11:1</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mx-5 mt-5">
+            <h5 style="border: 2px solid black; width: 200px; padding: 10px; background-color: #f8f4f4;">Thông tin chi tiết</h5>
+            <h2>Thiết kế – tinh tế và thời thượng của Grande 2025</h2>
+            <p>Xe Yamaha Grande 2025 sở hữu ngôn ngữ thiết kế đặc trưng, vừa thanh lịch, vừa hiện đại, phù hợp cho nhiều đối tượng người dùng.</p>
+            <ul class="mx-5">
+                <li>Đèn pha LED hình viên kim cương: Tăng khả năng chiếu sáng và tạo điểm nhấn độc đáo.</li>
+                <img src="../img/Grande/h1.png" alt="" class="mx-auto d-block w-50">
+                <li>Đuôi xe gọn gàng, hiện đại: Được tích hợp đèn hậu LED sang trọng.</li>
+                <img src="../img/Grande/h2.png" alt="" class="mx-auto d-block w-50">
+                <li>Thân xe khí động học: Giúp giảm lực cản gió, mang đến cảm giác lái nhẹ nhàng và mượt mà.</li>
+                <p>Để lại thông tin cá nhân vào biểu mẫu để được nhân viên Nam Tiến hỗ trợ tư vấn ngay nhé!</p>
+            </ul>
+            <h5>Động cơ – công nghệ tiết kiệm và mạnh mẽ của Grande 2025</h5>
+            <p>Động cơ là một trong những điểm mạnh của Yamaha Grande 2025, mang đến hiệu suất vượt trội trong phân khúc xe tay ga:</p>
+            <ul class="mx-5">
+                <li>Động cơ Blue Core 125cc:
+                    <ul>
+                        <li>Hiệu suất mạnh mẽ, đáp ứng tốt trong điều kiện giao thông.</li>
+                        <li>Tiết kiệm nhiên liệu vượt trội với mức tiêu thụ trung bình chỉ khoảng 1.6 lít/100km.</li>
+                        <img src="../img/Grande/h3.png" alt="" class="mx-auto d-block w-50">
+                    </ul>
+                </li>
+                <li>Công nghệ Hybrid:
+                    <ul>
+                        <li>Hỗ trợ tăng tốc mượt mà, đặc biệt hữu ích khi chở nặng hoặc leo dốc.</li>
+                        <li>Giảm thiểu tiếng ồn, mang lại trải nghiệm lái êm ái.</li>
+                    </ul>
+                </li>
+                <li>Hệ thống làm mát cải tiến: Giúp động cơ bền bỉ hơn trong điều kiện khí hậu nóng ẩm tại Việt Nam.</li>
+            </ul>
+            <p>Ngoài các màu sắc đã có sẵn trên xe quý khách có thể chọn sơn màu xe máy 3D theo sở thích cá nhân.</p>
+            <h5>Tiện ích – hiện đại của xe tay ga Yamaha Grande 2025</h5>
+            <p>Yamaha Grande 2025 được trang bị nhiều tiện ích cao cấp, nâng tầm trải nghiệm cho người dùng:</p>
+            <ul>
+                <li>Cốp rộng 27 lít:
+                    <ul>
+                        <li>Dễ dàng chứa mũ bảo hiểm cả đầu, túi xách và các vật dụng cá nhân.</li>
+                        <li>Tích hợp đèn LED chiếu sáng bên trong cốp, thuận tiện sử dụng ban đêm.</li>
+                    </ul>
+                </li>
+                <li>Màn hình LCD hiện đại:
+                    <ul>
+                        <li>Hiển thị đầy đủ các thông số như tốc độ, mức nhiên liệu, và thông báo từ hệ thống Hybrid.</li>
+                        <li>Giao diện dễ đọc, thân thiện với người dùng.</li>
+                        <img src="../img/Grande/h4.png" alt="" class="mx-auto d-block w-50">
+                    </ul>
+                </li>
+                <li>Cổng sạc USB:
+                    <ul>
+                        <li>Hỗ trợ sạc điện thoại và các thiết bị điện tử khi di chuyển.</li>
+                        <img src="../img/Grande/h5.png" alt="" class="mx-auto d-block w-50">
+                    </ul>
+                </li>
+                <li>Hệ thống khóa Smart Key:
+                    <ul>
+                        <li>Mở khóa nhanh chóng, an toàn.</li>
+                        <li>Tích hợp chức năng tìm xe tiện lợi trong bãi đỗ đông đúc.</li>
+                        <img src="../img/Grande/h6.png" alt="" class="mx-auto d-block w-50">
+                    </ul>
+                </li>
+                <li>Phanh ABS:
+                    <ul>
+                        <li>Được trang bị trên bánh trước (phiên bản Đặc Biệt và Giới Hạn), đảm bảo an toàn trong điều kiện đường trơn trượt.</li>
+                        <img src="../img/Grande/h7.png" alt="" class="mx-auto d-block w-50">
+                    </ul>
+                </li>
+            </ul>
+            <h1>Địa chỉ bán xe tay ga Yamaha Grande 2025 uy tín tại TPHCM, Bình Dương và Đồng Nai</h1>
+            <p>Nam Tiến 1: Địa chỉ tại số 338, đường Trần Hưng Đạo, khu phố Đông B, phường Đông Hòa, thành phố Dĩ An, tỉnh Bình Dương.</p>
+            <p>Nam Tiến 2: Nằm ở số 21A, đường Nguyễn Ảnh Thủ, khu phố 2, phường Hiệp Thành, quận 12, TP.HCM.</p>
+            <p>Nam Tiến 4: Số 463B, đường Nguyễn Thị Tú, phường Bình Hưng Hòa B, quận Bình Tân, TP.HCM. </p>
+            <p>Nam Tiến 5: Địa chỉ tại số 385, đường Tô Ký, ấp Mới 1, xã Tân Xuân, huyện Hóc Môn, TP.HCM.</p>
+            <p>Nam Tiến Nhơn Trạch: Số 720, đường Hùng Vương, khu phố Phước Hiệp, thị trấn Hiệp Phước, huyện Nhơn Trạch, tỉnh Đồng Nai.</p>
+            <p>Nam Tiến Bến Cam: Số 360, đường Lý Thái Tổ, ấp Bến Sắn, xã Phước Thiền, huyện Nhơn Trạch, tỉnh Đồng Nai.</p>
+            <img src="../img/Janus/h9.png" alt="" class="mx-auto d-block w-50">
+            <p>Khung giờ làm việc: từ 7g30 sáng - 21g tối (mỗi ngày).</p>
+            <p>Bảo hành xe 3.000km hoặc 3 năm tuỳ vào điều kiện nào đến trước.</p>
+            <p>Hotline Nam Tiến: 1900 2145 gọi ngay để được nhân viên Nam Tiến hỗ trợ tư vấn ngay nhé!</p>
+        </div>
+    </div>
+
+
+
+    <footer>
+        <div class="container-fluid bg-danger p-4 footer">
+            <div class="row p-5">
+                <div class="col-md-5 mt-3">
+                    <h4>CỬA HÀNG XE MÁY NAM TIẾN</h4>
+                    <p>Nam Tiến Dĩ An: Số 338 Trần Hưng Đạo, KP. Đông B, Phường Đông Hòa, Dĩ An, TP Dĩ An, Bình Dương</p>
+                    <p>Nam Tiến Quận 12: Số 21A Nguyễn Ảnh Thủ, KP2, Phường Hiệp Thành, Quận 12, TP.HCM</p>
+                    <p>Nam Tiến Bình Tân: Số 463B Nguyễn Thị Tú, Phường Bình Hưng Hòa B, Quận Bình Tân, TP.HCM (Đại lý Yamaha chính hãng ủy nhiệm của tập đoàn Yamaha Motor Việt Nam)</p>
+                    <p>Nam Tiến Hóc Môn: Số 385 Tô Ký, Ấp Mới 1, Tân Xuân, Hóc Môn, TP.HCM</p>
+                    <p>Nam Tiến Nhơn Trạch: Số 720 Đường Hùng Vương, KP. Phước Hiệp, TT. Hiệp Phước, Nhơn Trạch, Đồng Nai</p>
+                    <p>Nam Tiến Bến Cam: Số 360 Lý Thái Tổ, ấp Bến Sắn, xã Phước Thiền, huyện Nhơn Trạch, tỉnh Đồng Nai.</p>
+                    <p>Nam Tiến Nhà Bè: Số 770 Nguyễn Văn Tạo, Hiệp phước, Nhà Bè, TP.Hồ Chí Minh</p>
+                </div>
+                
+                <div class="col-md-2 mt-3">
+                    <h5>TRỞ VỀ CÁC TRANG</h5>
+                    <a href="Home.html" class="nav-link">Trang chủ</a>
+                    <a href="Gioithieu.html" class="nav-link">Giới thiệu</a>
+                    <a href="#" class="nav-link">Tin tức</a>
+                    <a href="lienhe.html" class="nav-link">Liên hệ</a>
+                    <a href="tragop.html" class="nav-link">Đăng ký trả góp</a>
+                </div>
+                <div class="col-md-2 mt-3">
+                    <h5>VỀ CHÚNG TÔI</h5>
+                    <a href="#" class="nav-link">Chính sách bảo mật</a>
+                    <a href="#" class="nav-link">Chính sách thanh toán-trả góp</a>
+                    <a href="#" class="nav-link">Chính sách vận chuyển</a>
+                    <a href="#" class="nav-link">Chính sách bảo hành</a>
+                </div>
+                <div class="col-md-3 mt-3">
+                    <h5>ĐĂNG KÝ NHẬN TIN TỪ CHÚNG TÔI</h5>
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d37178.28083917867!2d106.773768!3d10.902869!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3174d71fbeff5cdb%3A0x1778c192522883e3!2zWGUgTcOheSBOYW0gVGnhur9uIDEgLSBExKkgQW4gQsOsbmggRMawxqFuZw!5e1!3m2!1sen!2sus!4v1742282321135!5m2!1sen!2sus" width="360" height="200" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                    <p>Đừng bỏ lỡ hàng ngàn sản phẩm từ chương trình <br> siêu hấp dẫn</p>
+                    <form method="get">
+                        <div class="input-group w-75">
+                            <input type="email" class="form-control" placeholder="gửi địa chỉ Email">
+                            <button type="submit" class="input-group-text bg-warning text-dark border-0">Gửi</button>
+                        </div>
+                    </form>
+                    <h5>THEO DÕI CHÚNG TÔI</h5>
+                </div>  
+            </div>
+            <div class="row-gap-md-3" style="border-top: 1px solid #fff;">
+                <div class="col-md-12 mt-4">
+                    <div class="row"><p>&copy; <a href="Home.html" class="nav-link d-inline text-warning">Xe máy Nam Tiến</a>. Thiết kế bởi <a href="https://www.facebook.com/nostalgitmemori?locale=vi_VN" class="nav-link d-inline text-warning">Võ Duy Tiến</a></p></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="modal fade" id="authModal">
+        <div class="modal-dialog">
+            <div class="modal-content p-3">
+                <!-- Tabs chuyển đổi -->
+                <ul class="nav nav-tabs mb-3" id="authTab" role="tablist">
+                    <li class="nav-item">
+                        <button class="nav-link active fw-bold" id="login-tab" data-bs-toggle="tab" data-bs-target="#login" type="button" role="tab">
+                            ĐĂNG NHẬP
+                        </button>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <!-- Tab Đăng Nhập -->
+                    <div class="tab-pane fade show active" id="login" role="tabpanel">
+                        <p>Vui lòng đăng nhập trước khi Mua hàng ở đây!</p>
+                        <input type="email" name="txtemail" id="txtemail" class="form-control mb-2" placeholder="Email" onblur="ktemail()"> 
+                        <input type="password" class="form-control mb-2" placeholder="Mật Khẩu" id="txtpass" onblur="ktmatkhau2()">
+                        <p class="mt-2"><a href="#" class="text-decoration-none">Quên mật khẩu?</a></p>
+                        <button type="submit" class="btn btn-warning w-100">Đăng nhập</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
