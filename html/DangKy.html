@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trả Góp</title>
+    <title>Đăng Ký Thành Viên</title>
     <link rel="icon" type="image/png" href="../img/logo.png">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
@@ -164,15 +164,15 @@
         $(document).ready(function () {
         // Hàm kiểm tra email
         function ktEmailLogin() {
-            var email = $("#txtemail").val().replace(/\s/g, ''); // Xóa mọi khoảng trắng
+            var email = $("#txtEmail").val().replace(/\s/g, ''); // Xóa mọi khoảng trắng
             console.log("Email nhập:", email); // Log email ra console để kiểm tra
             var re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
             if (re.test(email)) {
-                $("#txtemail").removeClass("is-invalid");
+                $("#txtEmail").removeClass("is-invalid");
                 return true;
             } else {
-                $("#txtemail").addClass("is-invalid");
+                $("#txtEmail").addClass("is-invalid");
                 // alert("Email không hợp lệ."); // Tùy bạn bật lại dòng này
                 return false;
             }
@@ -423,12 +423,12 @@
                             <p>Vui lòng đăng nhập trước khi mua hàng!</p>
                         <form id="formLogin">
                             <div class="mb-3">
-                                <input type="email" name="txtemail" id="txtemail" class="form-control" placeholder="Email">
+                                <input type="email" name="txtEmail" id="txtEmail" class="form-control" placeholder="Email">
                                 <div class="invalid-feedback">Email không hợp lệ.</div>
                             </div>
                             <div class="mb-3">
                                 <input type="password" id="txtpass" class="form-control" placeholder="Mật khẩu">
-                                <div class="invalid-feedback">Mật khẩu phải có ít nhất 8 ký tự.</div>
+                                <div class="invalid-feedback">Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt.</div>
                             </div>
                             <p class="mt-2"><a href="#" class="text-decoration-none">Quên mật khẩu?</a></p>
                             <button type="submit" class="btn btn-warning w-100" id="submit">Đăng nhập</button>
