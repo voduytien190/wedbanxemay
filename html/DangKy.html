@@ -21,7 +21,7 @@
                     alert("Tên phải viết hoa chữ cái đầu, không được để trống.");
                     return false;
                 }
-            }
+        }
 
             function ktso() {
                 var so = /^0\d{9}$/;
@@ -52,7 +52,7 @@
                     return true;
                 } else {
                     alert("Mật khẩu phải có ít nhất 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt.");
-                    return false;
+                return false;
                 }
             }
 
@@ -91,8 +91,44 @@
                 }
             }
 
+            function kiemTraUsername() {
+                var mauKT = /^[a-zA-Z0-9_]{3,15}$/;
+                var username = $("#txtUsername").val().trim();
+                if (username == "") {
+                    alert("Tên đăng nhập không được để trống.");
+                    return false;
+                }
+                if (mauKT.test(username)) {
+                    return true;
+                } else {
+                    alert("Tên đăng nhập không hợp lệ. Phải từ 3-15 ký tự, không có dấu hoặc khoảng trắng.");
+                return false;
+                }
+            }
+
+            function kiemTraDiaChi() {
+                var diachi = $("#txtDC").val().trim();
+                var mauKT = /^[0-9\/]+(\s([A-ZÀ-Ỹ][a-zà-ỹ]*))+$/;
+
+                if (diachi === "") {
+                    $("#tbDC").html("Bắt buộc nhập");
+                    $("#tbDC").addClass("mauDo");
+                    return false;
+                }
+
+                if (!mauKT.test(diachi)) {
+                    $("#tbDC").html("Địa chỉ phải bắt đầu mỗi từ bằng số hoặc chữ hoa!");
+                    $("#tbDC").addClass("mauDo");
+                    return false;
+                }
+
+                $("#tbDC").html("*");
+                $("#tbDC").removeClass("mauDo");
+                    return true;
+            }
+
             $('#submit').click(function (e) {
-                e.preventDefault(); // Ngăn form submit mặc định
+                e.preventDefault();
 
                 if (
                     kiemTraHoTen() &&
@@ -100,29 +136,30 @@
                     ktemail() &&
                     ktmatkhau2() &&
                     ktmatkhau() &&
-                    ktngaysinh()
-                ) {
+                    ktngaysinh() &&
+                    kiemTraUsername() &&
+                    kiemTraDiaChi()
+                ){
                     alert("Đăng ký thành công!");
-
-                    var row = `
-                        <tr>
-                            <td>${$("#txtten").val()}</td>
-                            <td>${$("#txtsdt").val()}</td>
-                            <td>${$("#gioitinh").val()}</td>
-                            <td>${$("#txtemail").val()}</td>
-                            <td>${$("#thanhpho").val()}</td>
-                            <td>${$("#quan").val()}</td>
-                            <td>${$("#txtdiachi").val()}</td>
-                            <td>${$("#txtngaysinh").val()}</td>
-                        </tr>
-                    `;
+                var row = `
+                    <tr>
+                        <td>${$("#txtUsername").val()}</td>
+                        <td>${$("#txtten").val()}</td>
+                        <td>${$("#txtngaysinh").val()}</td>
+                        <td>${$("#gioitinh").val()}</td>
+                        <td>${$("#txtsdt").val()}</td>
+                        <td>${$("#txtemail").val()}</td>
+                        <td>${$("#txtDC").val()}</td>
+                    </tr>
+                `;
                     $("#tblThongTin tbody").append(row);
-                    $('#formDangKy')[0].reset(); // Reset form
+                    $('#formDangKy')[0].reset();
                 } else {
                     alert("Vui lòng kiểm tra lại các thông tin đã nhập.");
                 }
             });
         });
+
 
         $(document).ready(function () {
         // Hàm kiểm tra email
@@ -264,13 +301,27 @@
     <div class="container d-flex justify-content-center" style="margin-bottom: 40px; margin-top: 40px;">
         <div class="row">
             <form id="formDangKy">
+                <h1 class="text-center">Đăng Ký Tài Khoản</h1>
+                <div class="mb-3">
+                    <label for="txtUsername" class="form-label">Tên đăng nhập:</label>
+                    <input type="text" class="form-control" id="txtUsername">
+                </div>
+                <div class="mb-3">
+                    <label for="txtpass1" class="form-label">Mật khẩu:</label>
+                    <input type="password" class="form-control" id="txtpass1">
+                </div>
+                <div class="mb-3">
+                    <label for="txtpass2" class="form-label">Xác nhận mật khẩu:</label>
+                    <input type="password" class="form-control" id="txtpass2">
+                </div>
+                <h1 class="text-center">Thông Tin Cá Nhân</h1>
                 <div class="mb-3">
                     <label for="txtten" class="form-label">Họ tên:</label>
                     <input type="text" class="form-control" id="txtten">
                 </div>
                 <div class="mb-3">
-                    <label for="txtsdt" class="form-label">Số điện thoại:</label>
-                    <input type="text" class="form-control" id="txtsdt">
+                    <label for="txtngaysinh" class="form-label">Ngày sinh:</label>
+                    <input type="date" class="form-control" id="txtngaysinh">
                 </div>
                 <div class="mb-3">
                     <label for="gioitinh" class="form-label">Giới tính:</label>
@@ -281,32 +332,17 @@
                     </select>
                 </div>
                 <div class="mb-3">
+                    <label for="txtDC" class="form-label">Địa chỉ:</label>
+                    <input type="text" class="form-control" id="txtDC">
+                    <span id="tbDC" class="form-text text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="txtsdt" class="form-label">Số điện thoại:</label>
+                    <input type="text" class="form-control" id="txtsdt">
+                </div>
+                <div class="mb-3">
                     <label for="txtemail" class="form-label">Email:</label>
                     <input type="text" class="form-control" id="txtemail">
-                </div>
-                <div class="mb-3">
-                    <label for="txtpass1" class="form-label">Mật khẩu:</label>
-                    <input type="password" class="form-control" id="txtpass1">
-                </div>
-                <div class="mb-3">
-                    <label for="txtpass2" class="form-label">Xác nhận mật khẩu:</label>
-                    <input type="password" class="form-control" id="txtpass2">
-                </div>
-                <div class="mb-3">
-                    <label for="txtngaysinh" class="form-label">Ngày sinh:</label>
-                    <input type="date" class="form-control" id="txtngaysinh">
-                </div>
-                <div class="mb-3">
-                    <label for="thanhpho" class="form-label">Thành phố:</label>
-                    <input type="text" class="form-control" id="thanhpho">
-                </div>
-                <div class="mb-3">
-                    <label for="quan" class="form-label">Quận:</label>
-                    <input type="text" class="form-control" id="quan">
-                </div>
-                <div class="mb-3">
-                    <label for="txtdiachi" class="form-label">Địa chỉ:</label>
-                    <input type="text" class="form-control" id="txtdiachi">
                 </div>
                 <button type="submit" class="btn btn-primary" id="submit">Đăng ký</button>
             </form>
@@ -315,14 +351,13 @@
             <table class="table table-bordered mt-3" id="tblThongTin">
                 <thead>
                     <tr>
+                        <th>Tên đăng nhập</th>
                         <th>Họ tên</th>
-                        <th>SĐT</th>
+                        <th>Ngày sinh</th>           
                         <th>Giới tính</th>
+                        <th>SĐT</th>
                         <th>Email</th>
-                        <th>Thành phố</th>
-                        <th>Quận</th>
-                        <th>Địa chỉ</th>
-                        <th>Ngày sinh</th>
+                        <th>Địa chỉ</th>                       
                     </tr>
                 </thead>
                 <tbody></tbody>
